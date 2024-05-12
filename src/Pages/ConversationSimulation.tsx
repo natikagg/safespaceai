@@ -4,13 +4,10 @@ import { useConversation, AudioDeviceConfig, ConversationConfig } from "vocode";
 import MicrophoneIcon from "../Components/MicrophoneIcon";
 import AudioVisualization from "../Components/AudioVisualization";
 import { isMobile } from "react-device-detect";
-import getUserData from "../UserManagement/getUserData";
 import { signOut as amplifySignOut } from '@aws-amplify/auth';
 import { useNavigate } from 'react-router-dom';
 
 
-const userData = getUserData();
-console.log(userData);
 const ConversationSimulation = ({
   config,
 }: {
