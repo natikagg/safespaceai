@@ -64,7 +64,7 @@ const ConversationSimulation = ({
 
 
    const { status, start, stop, analyserNode, transcripts } = useConversation({
-     backendUrl: "https://backend.safespaceai.com/conversation",
+     backendUrl: "wss://backend.safespaceai.com/conversation",
      subscribeTranscript: false,
      audioDeviceConfig,
    });

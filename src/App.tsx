@@ -45,7 +45,7 @@ const transcriberConfig: Omit<
   };
   const vocodeConfig: VocodeConfig = {
     apiKey: "f374ad92a7788ae73230e2c48f05f0e5",
-    baseUrl: "https://backend.safespaceai.com/conversation",
+    baseUrl: "wss://backend.safespaceai.com/conversation",
   };
 
 
