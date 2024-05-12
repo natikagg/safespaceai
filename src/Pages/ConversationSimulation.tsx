@@ -11,10 +11,15 @@ import getUserData from '../UserManagement/getUserData';
 import { Typography } from "@mui/material";
 import decrementCallsLeft from "../UserManagement/increaseUsage";
 import { getMoreCredits } from "../UserManagement/getMoreCredits";
+import increaseUsage from "../UserManagement/increaseUsage";
 
-interface AttributeMap {
-  [key: string]: any;
+interface UserData {
+  CallsLeft: number;       // Assuming 'Decimal' is just a numeric value
+  userID: string;
+  Email: string;
+  Name: string;
 }
+
 
 const ConversationSimulation = ({
   config,
@@ -27,13 +32,11 @@ const ConversationSimulation = ({
   const [outputDevices, setOutputDevices] = React.useState<MediaDeviceInfo[]>(
     []
   );
-  const [userData, setUserData] = useState<AttributeMap | null>(null);
+  const [userData, setUserData] = useState<UserData | null>(null);
   const [loadingUserData, setLoadingUserData] = useState(true); // State to manage loading status
-  const [trait, setTrait] = useState("");
-  const [role, setRole] = useState("");
-  const [goal, setGoal] = useState("");
-  const [behavior, setBehavior] = useState("");
-  const [tone, setTone] = useState("");
+  const [trait, setTrait] = useState("Stubborn");
+  const [role, setRole] = useState("Manager");
+  const [scenario, setScenario] = useState("Ask for a raise");
   /*let transcripts: any[] = [];
   const { status, start, stop, analyserNode } = useConversation(
     Object.assign(config, { audioDeviceConfig })
@@ -101,7 +104,25 @@ const handleBuyCredits = async () => {
 
 
 const sendPrompt = async () => {
-  const fullPrompt = `Imagine you are a ${trait} ${role}. Your primary objective is to ${goal}. In this role, you should craft responses that align closely with the objectives set for your character. Make sure your replies demonstrate a clear understanding of your position and responsibilities.\nWhen interacting, focus on ${behavior} to convincingly portray your character. Your communication should be consistent with someone who embodies the archetype of ${trait} ${role}, ensuring that all responses are in character and realistic.\nThroughout the interaction, maintain a tone that is ${tone} and use language that reinforces your ${trait} and ${role}. Remember, your role is not just to respond, but to engage in a way that leaves no doubt about your character's intentions and personality. Make sure your dialogues feel natural and human-like, reflecting a true-to-life interaction.`;
+  var fullPrompt = "";
+  if (scenario === "Ask for a raise" )
+    {
+      fullPrompt = `Imagine you are a ${trait} ${role}. You find yourself in a scenario where one of your subordinates, who believes they have been performing exceptionally, approaches you to discuss a potential raise. Your task is to infer your primary objective based on your character's trait and role, and the context of this personnel and financial management challenge.
+      When interacting, focus on your defined trait and the dynamic role to convincingly portray your character. Ensure your communication aligns with someone who embodies the archetype of ${trait} ${role}, making all responses in-character and realistic.
+      Throughout the interaction, maintain a tone and use language that reinforces your character's specific traits and professional role. Engage in a way that clearly conveys your character's intentions and personality based on the scenario. Your dialogue should feel natural and human-like, reflecting a true-to-life interaction where you address the subordinate's request within the framework of your role's expectations and responsibilities.`;
+    }
+  else if (scenario === "Talk about scope creep")
+    {
+      fullPrompt = `Imagine you are a ${trait} ${role}. You find yourself in a scenario where a colleague approaches you to discuss scope creep in a current project. Your task is to infer your primary objective based on your character's trait and role, and the context of managing project boundaries and expectations effectively.
+      When interacting, focus on your defined trait and the dynamic role to convincingly portray your character. Ensure your communication aligns with someone who embodies the archetype of ${trait} ${role}, making all responses in-character and realistic.
+      Throughout the interaction, maintain a tone and use language that reinforces your character's specific traits and professional role. Engage in a way that clearly conveys your character's intentions and personality based on the scenario. Your dialogue should feel natural and human-like, reflecting a true-to-life interaction where you address the issue of scope creep thoughtfully, considering the project's goals and constraints.`;
+    }
+  else if (scenario === "Address extra workload")
+    {
+      fullPrompt = `Imagine you are a ${trait} ${role}. You find yourself in a scenario where one of your subordinates approaches you to talk about their current workload, expressing concerns over being overwhelmed. Your task is to infer your primary objective based on your character's trait and role, and the context of managing team capacity and morale effectively.
+      When interacting, focus on your defined trait and the dynamic role to convincingly portray your character. Ensure your communication aligns with someone who embodies the archetype of ${trait} ${role}, making all responses in-character and realistic.
+      Throughout the interaction, maintain a tone and use language that reinforces your character's specific traits and professional role. Engage in a way that clearly conveys your character's intentions and personality based on the scenario. Your dialogue should feel natural and human-like, reflecting a true-to-life interaction where you address the subordinate's concerns with empathy and pragmatism, balancing the needs of the individual with the requirements of the organization.`;
+    }
   try {
     const response = await fetch("http://3.215.133.99:3000/prompt", {
       method: "POST",
@@ -130,57 +151,43 @@ const sendPrompt = async () => {
         <Box display="flex" justifyContent="center" alignItems="center" height="10vh">
           <Spinner color="blue.500" size="xl" />
         </Box>
-      ) : userData && userData.CallsLeft > 0 ? (
+      ) : userData.CallsLeft > 0 ? (
         <>
       <Box position="absolute" top="15%" left="20%" p={4} display="flex" justifyContent="center" alignItems="center">
         {status !== "connected" && ( 
               <HStack spacing={1}>
-                <Input
-                  placeholder="Trait"
-                  value={trait}
-                  onChange={(e) => setTrait(e.target.value)}
-                  width="150px"
-                />
-                <Input
-                  placeholder="Role"
-                  value={role}
-                  onChange={(e) => setRole(e.target.value)}
-                  width="150px"
-                />
-                <Input
-                  placeholder="Goal"
-                  value={goal}
-                  onChange={(e) => setGoal(e.target.value)}
-                  width="150px"
-                />
-                <Input
-                  placeholder="Specific behavior or response strategy"
-                  value={behavior}
-                  onChange={(e) => setBehavior(e.target.value)}
-                  width="150px"
-                />
-                <Input
-                  placeholder="Desired tone"
-                  value={tone}
-                  onChange={(e) => setTone(e.target.value)}
-                  width="150px"
-                />
-                <Button colorScheme="blue" onClick={sendPrompt}>Send Prompt</Button>
+                <Select placeholder={trait} value={trait} onChange={(e) => setTrait(e.target.value)} width="200px">
+                  <option value="Stubborn">Stubborn</option>
+                  <option value="Friendly">Friendly</option>
+                  <option value="Frustrated">Frustrated</option>
+                  <option value="Stressed">Stressed</option>
+                  <option value="Reserved">Reserved</option>
+                  <option value="Skeptical">Skeptical</option>
+                </Select>
+                <Select placeholder={role} value={role} onChange={(e) => setRole(e.target.value)} width="200px">
+                  <option value="Manager">Manager</option>
+                  <option value="Coworker">Coworker</option>
+                </Select>
+                <Select placeholder={scenario} value={scenario} onChange={(e) => setScenario(e.target.value)} width="200px">
+                  <option value="Ask for a raise">Ask for a raise</option>
+                  <option value="Talk about scope creep">Talk about scope creep</option>
+                  <option value="Address extra workload">Address extra workload</option>
+                </Select>
               </HStack>
               )}
             </Box>
 
         <Box position="absolute" top="45%" left="50%" transform="translate(-50%, -50%)">
         <Button
-          variant="link"
           disabled={["connecting", "error"].includes(status)}
           onClick={() => {
             if (status === "connected") {
               //console.log("Stopping conversation...");
               stop();
-              //decrementCallsLeft();
+              increaseUsage();
             } else {
               //console.log("Starting conversation...");
+              sendPrompt();
               start();
             }
           }}
@@ -190,6 +197,29 @@ const sendPrompt = async () => {
           </Box>
         </Button>
         </Box>
+        <HStack
+        justifyContent="center" spacing="50px" width="full" position="fixed" bottom="150px" left="40%"
+        >
+          <Button 
+            colorScheme="blue"
+            onClick={() => {
+              sendPrompt();
+              start();
+            }}
+          >
+            Start Call
+          </Button>
+          <Button
+          colorScheme="blue" 
+          onClick={() => {
+            stop();
+            increaseUsage();
+          }
+          }
+          >
+          End Call
+          </Button>
+        </HStack>
         </>
       ) : (
         <>
@@ -243,7 +273,7 @@ const sendPrompt = async () => {
           )}
           <Select
             color={"#FFFFFF"}
-            disabled={["connecting", "connected"].includes(status)}
+            disabled={true}
             onChange={(event) => {
               if (event.target.value) {
                 setAudioDeviceConfig({

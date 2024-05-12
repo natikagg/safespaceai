@@ -8,7 +8,6 @@ const getUserData = async () => {
         // Get the userId from the current user
         const session = await fetchAuthSession();
         const userId  = session.userSub;
-        console.log(userId);
 
         // Define the URL of the API endpoint
         const apiUrl = 'https://fkf2y9blxk.execute-api.us-east-1.amazonaws.com/dev';
@@ -29,9 +28,8 @@ const getUserData = async () => {
 
         // Parse the JSON response
         const userData = await response.json();
-
+        console.log(userData);
         // Log and return the user data
-        console.log('User data retrieved:', userData);
         return userData["body"];
     } catch (error) {
         console.error('Error fetching user data:', error);

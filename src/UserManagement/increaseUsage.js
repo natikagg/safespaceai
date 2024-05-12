@@ -1,54 +1,38 @@
-import AWS from 'aws-sdk';
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+import { DynamoDBDocumentClient, GetCommand } from "@aws-sdk/lib-dynamodb";
 import { fetchAuthSession, getCurrentUser } from '@aws-amplify/auth';
 
-const decrementCallsLeft = async () => {
+// Function to fetch user data from the API
+const increaseUsage = async () => {
     try {
-        // Fetch the current session
+        // Get the userId from the current user
         const session = await fetchAuthSession();
-        const { userId } = await getCurrentUser();
+        const userId  = session.userSub;
 
-        if (session && session.credentials) {
-            AWS.config.update({
-                region: 'us-east-1',
-                credentials: {
-                    accessKeyId: session.credentials.accessKeyId,
-                    secretAccessKey: session.credentials.secretAccessKey,
-                    sessionToken: session.credentials.sessionToken
-                }
-            });
+        // Define the URL of the API endpoint
+        const apiUrl = 'https://r7tpc8vi6j.execute-api.us-east-1.amazonaws.com/dev';
 
-            const dynamoDb = new AWS.DynamoDB.DocumentClient();
-            const tableName = 'safespaceai'; // DynamoDB table name
+        // Make an HTTP POST request to the API
+        const response = await fetch(apiUrl, {
+            method: 'POST', // Set the method to POST
+            headers: {
+                'Content-Type': 'application/json' // Set the content type header for JSON
+            },
+            body: JSON.stringify({ userId}) // Send the userId in the request body as JSON
+        });
 
-            // Prepare update parameters
-            const params = {
-                TableName: tableName,
-                Key: { 'userID': userId },
-                UpdateExpression: "SET CallsLeft = CallsLeft - :val",
-                ConditionExpression: "CallsLeft > :zero", // Ensure there are calls left to decrement
-                ExpressionAttributeValues: {
-                    ":val": 1,
-                    ":zero": 0
-                },
-                ReturnValues: "UPDATED_NEW" // Returns all of the attributes of the item after the update
-            };
-
-            // Update the data in DynamoDB
-            const data = await dynamoDb.update(params).promise();
-            console.log("Updated data:", data);
-            return data.Attributes; // Return the updated attributes
-        } else {
-            console.log("Session credentials are missing.");
-            return null; // Return null if session credentials are missing
+        if (!response.ok) {
+            // Handle non-2xx HTTP responses
+            throw new Error('Network response was not ok');
         }
+
+        // Parse the JSON response
+        const userData = await response.json();
+
     } catch (error) {
-        if (error.code === "ConditionalCheckFailedException") {
-            console.error("No more calls left to decrement.");
-        } else {
-            console.error("Error updating DynamoDB:", error);
-        }
-        return null; // Return null on error
+        console.error('Error fetching user data:', error);
+        return null;
     }
 };
 
-export default decrementCallsLeft;
+export default increaseUsage;

@@ -9,7 +9,6 @@ function Login() {
     <Authenticator initialState="signIn" signUpAttributes={[
       'name'
     ]}
-    socialProviders={['google']}
     >
       {({ signOut, user }) => (
         <div>
