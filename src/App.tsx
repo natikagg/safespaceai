@@ -45,7 +45,7 @@ const transcriberConfig: Omit<
   };
   const vocodeConfig: VocodeConfig = {
     apiKey: "f374ad92a7788ae73230e2c48f05f0e5",
-    baseUrl: "ws://3.215.133.99:3000/conversation",
+    baseUrl: "wss://3.215.133.99:3000/conversation",
   };
 
 
