@@ -64,7 +64,7 @@ const ConversationSimulation = ({
 
 
    const { status, start, stop, analyserNode, transcripts } = useConversation({
-     backendUrl: "wss://3.215.133.99:3000/conversation",
+     backendUrl: "https://backend.safespaceai.com/conversation",
      subscribeTranscript: false,
      audioDeviceConfig,
    });
@@ -124,7 +124,7 @@ const sendPrompt = async () => {
       Throughout the interaction, maintain a tone and use language that reinforces your character's specific traits and professional role. Engage in a way that clearly conveys your character's intentions and personality based on the scenario. Your dialogue should feel natural and human-like, reflecting a true-to-life interaction where you address the subordinate's concerns with empathy and pragmatism, balancing the needs of the individual with the requirements of the organization.`;
     }
   try {
-    const response = await fetch("https://3.215.133.99:3000/prompt", {
+    const response = await fetch("https://backend.safespaceai.com/prompt", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
