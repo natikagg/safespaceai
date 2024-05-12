@@ -1,0 +1,58 @@
+/* src/styles/PricingCard.css */
+.card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    padding: 20px;
+    text-align: center;
+    width: 300px;
+    margin: auto;
+    font-family: Arial, sans-serif;
+}
+
+.title {
+    color: #333;
+    margin: 0;
+    font-size: 24px;
+}
+
+.price {
+    color: #000;
+    font-size: 48px;
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+.features {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+}
+
+.features li {
+    margin: 10px 0;
+    color: #666;
+}
+
+.btn {
+    background: linear-gradient(to right, #6a11cb, #2575fc);
+    border: none;
+    border-radius: 20px;
+    color: white;
+    font-size: 16px;
+    padding: 10px 20px;
+    width: 100%;
+    cursor: pointer;
+    outline: none;
+    transition: background 0.3s ease;
+}
+
+.btn:hover {
+    background: linear-gradient(to right, #2575fc, #6a11cb);
+}
+
+.small-text {
+    color: #666;
+    font-size: 14px;
+    margin-top: 15px;
+}

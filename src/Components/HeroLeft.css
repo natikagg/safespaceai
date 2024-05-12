@@ -1,0 +1,69 @@
+.container {
+    color: white;
+    padding: 50px;
+    text-align: left;
+}
+
+.heroHeading{
+    font-size: 60px;
+    margin-bottom: 20px;
+    max-width: 600px;
+
+}
+
+.herosub{
+    color:grey;
+}
+.unshakable{
+    color: #8061fa;
+}
+
+h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+p {
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+.sign-up-bar {
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    background-color: white;
+    border-radius: 20px;
+    
+}
+
+.sign-up-bar input {
+    flex-grow: 1;
+    padding: 10px;
+    margin-left: 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 20px 0 0 20px; /* Rounded left corners */
+}
+.sign-up-bar input:focus {
+    outline: none;
+}
+
+
+.search-bar button {
+    padding: 10px 20px;
+    background-color: #0000ff; /* Blue background */
+    color: white;
+    border: none;
+    border-radius: 0 4px 4px 0; /* Rounded right corners */
+    cursor: pointer;
+}
+
+.no-credit {
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.search-bar input:focus, .search-bar button:focus {
+    outline: none;
+}

@@ -1,0 +1,25 @@
+/* Demo.css */
+.demo-container {
+    display: flex;        /* Enables flexbox layout */
+    flex-direction: column; /* Stack items vertically */
+    align-items: center;  /* Center items horizontally */
+    justify-content: center; /* Center items vertically */
+    height: 100vh;        /* Full viewport height */
+    text-align: center;   /* Center text alignment for all text within */
+}
+
+.video-container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 100px;
+  }
+
+  .demoHeading{
+    padding-top: 50px;
+    font-size: 60px;
+    color: white;
+    text-align: center;
+  }

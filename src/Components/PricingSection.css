@@ -1,0 +1,18 @@
+.pricing{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 100px;
+}
+
+.pricingLeft{
+    max-width: 600px;
+    padding: 40px;
+    font-size: 40px;
+    padding-top: 15%;
+    padding-left: 150px;
+    font-weight: lighter;
+}
+
+.pricingRight{
+    margin-bottom:100px;
+}
