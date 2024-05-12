@@ -89,25 +89,6 @@ function AppAppBar({ }: AppAppBarProps) {
                 style={logoStyle}
                 alt="logo of sitemark"
               />
-              <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                <MenuItem
-                  onClick={() => scrollToSection('pricing')}
-                  sx={{ py: '6px', px: '12px' }}
-                >
-                  <Typography variant="body2" color="white">
-                    Pricing
-                  </Typography>
-                </MenuItem>
-                <MenuItem
-                  onClick={() => scrollToSection('demo')}
-                  sx={{ py: '6px', px: '12px' }}
-                >
-                  <Typography variant="body2" color="white">
-                    Demo
-                  </Typography>
-                </MenuItem>
-            
-              </Box>
             </Box>
             <Box
               sx={{

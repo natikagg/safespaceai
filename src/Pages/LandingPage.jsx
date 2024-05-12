@@ -19,7 +19,6 @@ const LandingPage = () =>{
         <AppAppBar />
         <Hero/>
         <Demo />
-        <PricingSection />
     </div>
   );
 }

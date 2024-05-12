@@ -224,7 +224,7 @@ const sendPrompt = async () => {
       ) : (
         <>
           <Typography variant="h2" left="30%" position="fixed" textAlign="center" top="40%"  fontSize="xl" color="white">Dayum! You’re on fire!</Typography>
-          <Typography variant="h6" position="fixed" left = "15%" top="50%"  fontSize="xl" textAlign="center" color="white">You’ve zoomed through all the role plays. Keep practicing your communication skills by securing more credits! </Typography>
+          <Typography variant="h6" position="fixed" left = "15%" top="50%"  fontSize="xl" textAlign="center" color="white">You’ve zoomed through all the role plays. Keep practicing on your communication skills by securing more credits! </Typography>
           <Button
             colorScheme="blue"
             position="fixed"
