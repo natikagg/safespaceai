@@ -17,7 +17,7 @@ console.log("sign-in details", signInDetails);
 
         if (session && session.credentials) {
             AWS.config.update({
-                region: 'us-east-2',
+                region: 'us-east-1',
                 credentials: {
                     accessKeyId: session.credentials.accessKeyId,
                     secretAccessKey: session.credentials.secretAccessKey,
