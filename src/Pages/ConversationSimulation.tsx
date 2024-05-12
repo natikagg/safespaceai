@@ -12,7 +12,9 @@ import { Typography } from "@mui/material";
 import decrementCallsLeft from "../UserManagement/increaseUsage";
 import { getMoreCredits } from "../UserManagement/getMoreCredits";
 
-
+interface AttributeMap {
+  [key: string]: any;
+}
 
 const ConversationSimulation = ({
   config,
@@ -25,7 +27,7 @@ const ConversationSimulation = ({
   const [outputDevices, setOutputDevices] = React.useState<MediaDeviceInfo[]>(
     []
   );
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState<AttributeMap | null>(null);
   const [loadingUserData, setLoadingUserData] = useState(true); // State to manage loading status
   const [trait, setTrait] = useState("");
   const [role, setRole] = useState("");
@@ -85,6 +87,10 @@ const ConversationSimulation = ({
   const [prompt, setPrompt] = useState("");
 
 const navigate = useNavigate();
+if (userData === null) {
+  // Handle the null case, maybe return a loading spinner or a placeholder
+  return null;
+}
 const handleBuyCredits = async () => {
   try {
     getMoreCredits(userData.Email, userData.userID);
@@ -92,6 +98,7 @@ const handleBuyCredits = async () => {
     //console.error('Error redirecting: ', error);
   }
 };
+
 
 const sendPrompt = async () => {
   const fullPrompt = `Imagine you are a ${trait} ${role}. Your primary objective is to ${goal}. In this role, you should craft responses that align closely with the objectives set for your character. Make sure your replies demonstrate a clear understanding of your position and responsibilities.\nWhen interacting, focus on ${behavior} to convincingly portray your character. Your communication should be consistent with someone who embodies the archetype of ${trait} ${role}, ensuring that all responses are in character and realistic.\nThroughout the interaction, maintain a tone that is ${tone} and use language that reinforces your ${trait} and ${role}. Remember, your role is not just to respond, but to engage in a way that leaves no doubt about your character's intentions and personality. Make sure your dialogues feel natural and human-like, reflecting a true-to-life interaction.`;
@@ -114,7 +121,9 @@ const sendPrompt = async () => {
 };
   return (
     <>
-      <AppNavBar />
+      <AppNavBar mode={"light"} toggleColorMode={function (): void {
+        throw new Error("Function not implemented.");
+      } } />
       {analyserNode && <AudioVisualization analyser={analyserNode} />}
 
       {loadingUserData ? (

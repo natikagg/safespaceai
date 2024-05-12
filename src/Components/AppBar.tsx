@@ -11,6 +11,7 @@ import Drawer from '@mui/material/Drawer';
 import { signOut as amplifySignOut } from '@aws-amplify/auth';
 import { useNavigate } from 'react-router-dom';
 import getUserData from '../UserManagement/getUserData';
+import { useState } from 'react';
 
 
 const logoStyle = {
@@ -26,11 +27,15 @@ interface AppAppBarProps {
   toggleColorMode: () => void;
 }
 
+interface AttributeMap {
+    [key: string]: any;
+  }
+  
 function AppNavBar({ }: AppAppBarProps) {
 
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
-  const [userData, setUserData] = React.useState(null);
+  const [userData, setUserData] = useState<AttributeMap | null>(null);
 
   React.useEffect(() => {
     const fetchUserData = async () => {
@@ -116,7 +121,6 @@ function AppNavBar({ }: AppAppBarProps) {
               }}
             >
                 <Typography
-                    variant="p"
                     component="div"
                     sx={{ flexGrow: 1, color: 'white', alignSelf: 'center', marginRight: '30px'}}
                 >  
