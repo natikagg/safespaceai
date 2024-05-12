@@ -4,6 +4,13 @@ import { useConversation, AudioDeviceConfig, ConversationConfig } from "vocode";
 import MicrophoneIcon from "../Components/MicrophoneIcon";
 import AudioVisualization from "../Components/AudioVisualization";
 import { isMobile } from "react-device-detect";
+import getUserData from "../UserManagement/getUserData";
+import { signOut as amplifySignOut } from '@aws-amplify/auth';
+import { useNavigate } from 'react-router-dom';
+
+
+const userData = getUserData();
+console.log(userData);
 const ConversationSimulation = ({
   config,
 }: {
@@ -44,6 +51,17 @@ const ConversationSimulation = ({
       });
   });
   const [prompt, setPrompt] = useState("");
+
+const navigate = useNavigate();
+const handleSignOut = async () => {
+  try {
+    await amplifySignOut();
+    navigate('/login'); // Redirect to the login page after signing out
+  } catch (error) {
+    //console.error('Error signing out: ', error);
+  }
+};
+
   const sendPrompt = async () => {
     try {
       const response = await fetch("http://3.215.133.99:3000/prompt", {
@@ -66,6 +84,9 @@ const ConversationSimulation = ({
     <>
       {analyserNode && <AudioVisualization analyser={analyserNode} />}
       <Box p={4} display="flex" justifyContent="center" alignItems="center">
+      <Button onClick={handleSignOut}> 
+        Sign out
+         </Button>
       <Input
         placeholder="Enter prompt"
         value={prompt}
@@ -175,6 +196,7 @@ const ConversationSimulation = ({
             })
           }
         </VStack>
+        
       )}
     </>
   );
