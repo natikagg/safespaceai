@@ -1,10 +1,9 @@
-import AWS from 'aws-sdk';
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+import { DynamoDBDocumentClient, GetCommand } from "@aws-sdk/lib-dynamodb";
 import { fetchAuthSession, getCurrentUser } from '@aws-amplify/auth';
 
-// It's a good practice to configure AWS as early as possible in your application
-AWS.config.update({
-    region: 'us-east-1'
-});
+// Configure the AWS Region
+const REGION = "us-east-1";
 
 const getUserData = async () => {
     try {
@@ -15,23 +14,28 @@ const getUserData = async () => {
             console.log("Session credentials are missing.");
             return null;
         }
+        console.log("Session Info:", session);
+        
+        // Initialize DynamoDB Client with Cognito credentials
+        const client = new DynamoDBClient({
+            region: REGION,
+            credentials: {
+                accessKeyId: session.credentials.accessKeyId,
+                secretAccessKey: session.credentials.secretAccessKey,
+                sessionToken: session.credentials.sessionToken
+            }
+        });
 
-        // Update credentials after fetching them
-        AWS.config.credentials = {
-            accessKeyId: session.credentials.accessKeyId,
-            secretAccessKey: session.credentials.secretAccessKey,
-            sessionToken: session.credentials.sessionToken
-        };
-
-        const dynamoDb = new AWS.DynamoDB.DocumentClient();
+        const docClient = DynamoDBDocumentClient.from(client);
 
         const params = {
             TableName: 'safespaceai',
             Key: { 'userID': userId }
         };
 
-        const data = await dynamoDb.get(params).promise();
-        return data.Item || null;
+        const command = new GetCommand(params);
+        const { Item } = await docClient.send(command);
+        return Item || null;
     } catch (error) {
         console.error('Error fetching user data:', error);
         return null;
