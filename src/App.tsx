@@ -1,7 +1,4 @@
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import { useEffect, useState } from "react";
-import { generateClient } from "aws-amplify/data";
-import { Authenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import LandingPage from './Pages/LandingPage';
 import Login from './Pages/Login';
@@ -18,7 +15,7 @@ import {
   WebSocketUserImplementedAgentConfig,
 } from "vocode";
 
-const client = generateClient();
+// const client = generateClient();
 const transcriberConfig: Omit<
     DeepgramTranscriberConfig,
     "samplingRate" | "audioEncoding"

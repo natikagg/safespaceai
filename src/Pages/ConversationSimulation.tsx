@@ -178,7 +178,7 @@ const sendPrompt = async () => {
             if (status === "connected") {
               //console.log("Stopping conversation...");
               stop();
-              decrementCallsLeft();
+              //decrementCallsLeft();
             } else {
               //console.log("Starting conversation...");
               start();

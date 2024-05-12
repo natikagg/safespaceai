@@ -2,40 +2,37 @@ import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient, GetCommand } from "@aws-sdk/lib-dynamodb";
 import { fetchAuthSession, getCurrentUser } from '@aws-amplify/auth';
 
-// Configure the AWS Region
-const REGION = "us-east-1";
-
+// Function to fetch user data from the API
 const getUserData = async () => {
     try {
+        // Get the userId from the current user
         const session = await fetchAuthSession();
-        const { userId } = await getCurrentUser();
+        const userId  = session.userSub;
+        console.log(userId);
 
-        if (!session || !session.credentials) {
-            console.log("Session credentials are missing.");
-            return null;
-        }
-        console.log("Session Info:", session);
-        
-        // Initialize DynamoDB Client with Cognito credentials
-        const client = new DynamoDBClient({
-            region: REGION,
-            credentials: {
-                accessKeyId: session.credentials.accessKeyId,
-                secretAccessKey: session.credentials.secretAccessKey,
-                sessionToken: session.credentials.sessionToken
-            }
+        // Define the URL of the API endpoint
+        const apiUrl = 'https://fkf2y9blxk.execute-api.us-east-1.amazonaws.com/dev';
+
+        // Make an HTTP POST request to the API
+        const response = await fetch(apiUrl, {
+            method: 'POST', // Set the method to POST
+            headers: {
+                'Content-Type': 'application/json' // Set the content type header for JSON
+            },
+            body: JSON.stringify({ userId}) // Send the userId in the request body as JSON
         });
 
-        const docClient = DynamoDBDocumentClient.from(client);
+        if (!response.ok) {
+            // Handle non-2xx HTTP responses
+            throw new Error('Network response was not ok');
+        }
 
-        const params = {
-            TableName: 'safespaceai',
-            Key: { 'userID': userId }
-        };
+        // Parse the JSON response
+        const userData = await response.json();
 
-        const command = new GetCommand(params);
-        const { Item } = await docClient.send(command);
-        return Item || null;
+        // Log and return the user data
+        console.log('User data retrieved:', userData);
+        return userData["body"];
     } catch (error) {
         console.error('Error fetching user data:', error);
         return null;

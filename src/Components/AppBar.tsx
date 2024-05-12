@@ -27,15 +27,13 @@ interface AppAppBarProps {
   toggleColorMode: () => void;
 }
 
-interface AttributeMap {
-    [key: string]: any;
-  }
+
   
 function AppNavBar({ }: AppAppBarProps) {
 
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
-  const [userData, setUserData] = useState<AttributeMap | null>(null);
+  const [userData, setUserData] = useState(0);
 
   React.useEffect(() => {
     const fetchUserData = async () => {
@@ -46,7 +44,7 @@ function AppNavBar({ }: AppAppBarProps) {
     fetchUserData();
   }, []);
 
-  const callsRemaining = userData ? userData.CallsLeft : 0;
+  const callsRemaining = userData ? userData : 0;
 
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
